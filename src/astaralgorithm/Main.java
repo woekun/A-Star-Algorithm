@@ -22,29 +22,27 @@ import javax.swing.border.MatteBorder;
 
 public class Main {
 
-    Timer time;
+    private Timer time;
+    private int t = 0;
 
     public static void main(String[] args) {
-        Main testGrid02 = new Main();
-
+        Main Run = new Main();
     }
-
-    int t = 0;
-    int[][] MT = new int[20][20];
-
+    
     public Main() {
         EventQueue.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            }
+            } catch (ClassNotFoundException | InstantiationException 
+                    | IllegalAccessException 
+                    | UnsupportedLookAndFeelException ex) {}
             
             JFrame frame = new JFrame("Astar Algorithm");
             frame.setSize(640, 480);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLayout(new BorderLayout());
             try {
-                frame.add(new TestPane());
+                frame.add(new Panel());
             } catch (InterruptedException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -56,11 +54,11 @@ public class Main {
 
     }
 
-    public class TestPane extends JPanel{
+    public class Panel extends JPanel{
 
         public CellPane[][] cellPane = new CellPane[20][20];
 
-        public TestPane() throws InterruptedException {
+        public Panel() throws InterruptedException {
             setLayout(new GridBagLayout());
 
             GridBagConstraints gbc = new GridBagConstraints();
@@ -76,12 +74,11 @@ public class Main {
                     add(cellPane[row][col], gbc);
                 }
             }
-            gbc.gridx = 21;
-            gbc.gridy = 2;
-            gbc.gridheight = 2;
-            JButton bt = new JButton("Run");
-            bt.addActionListener((ActionEvent e) -> {
-
+            
+            JButton btnRun = new JButton("Run");
+            btnRun.setPreferredSize(new Dimension(70,30));
+            btnRun.addActionListener((ActionEvent e) -> {
+                int[][] MT = new int[20][20];
                 for (int i = 0; i < 20; i++) {
                     for (int j = 0; j < 20; j++) {
                         if (cellPane[i][j].getBackground() == Color.RED) 
@@ -96,18 +93,41 @@ public class Main {
                 AstarAlgorithm astar = new AstarAlgorithm(MT);
                
                 Timer timer = new Timer(1000, (ActionEvent e1) -> {
-                    astar.create_Trace(cellPane);
+                    astar.createTrace(cellPane);
                 });
 
-                timer.start();
-                
+                astar.setTimer(timer);
+                timer.start(); 
             });
+            
+            gbc.gridx = 22;
+            gbc.gridy = 2;
+            gbc.gridheight = 2;
+            add(btnRun, gbc);
+            
+            JButton btnRefresh = new JButton("Refresh");
+            btnRefresh.setPreferredSize(new Dimension(70,30));
+            btnRefresh.addActionListener((ActionEvent e) -> {
+                for (int i = 0; i < 20; i++) {
+                    for (int j = 0; j < 20; j++) {
+                        cellPane[i][j].setBackground(getBackground());
+                        initStartPoint();
+                        
+                    }
+                }
+            });
+            
+            gbc.gridx = 22;
+            gbc.gridy = 3;
+            gbc.gridheight = 2;
+            add(btnRefresh, gbc);
 
-            add(bt, gbc);
-
+            initStartPoint();
+        }
+        
+        private void initStartPoint(){
             cellPane[0][0].setBackground(Color.red);
             cellPane[0][1].setBackground(Color.green);
-
         }
     }
 
