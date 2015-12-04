@@ -83,8 +83,6 @@ public final class AstarAlgorithm {
             searchNode(target);
         }
     }
-    
-    
 
     public void searchNode(Node parrentNode) {
         int x = parrentNode.getX();
@@ -93,13 +91,14 @@ public final class AstarAlgorithm {
 
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if ((x + i > 0 && x + i < 20) && (y + j > 0 && y + j < 20) 
-                 && (A[x + i][y + j] != 1 && checkNode(x + i, y + j) == false)) {
+                if ((x + i >= 0 && x + i < 20) && (y + j >= 0 && y + j < 20) 
+                   &&(i!=0 || j!= 0)&& (A[x + i][y + j] != 1 
+                   && checkNode(x + i, y + j) == false)) {
                     if (A[x + i][y + j] == 3) {
                         goal.setParrentNode(parrentNode);
-                        System.out.println(""+goal.getParrentNode().getX()+","+goal.getParrentNode().getY());
+                        System.out.println("GOAL is "+goal.getParrentNode().getX()+","+goal.getParrentNode().getY());
                         check = true;
-                        drawRoad(goal);
+//                        drawRoad(goal);
                         break;
                     }
                     
@@ -166,7 +165,9 @@ public final class AstarAlgorithm {
     }
     
     public void drawRoad(Node node){
+        getTimer().stop();
         getRoad(node);
+        System.out.println("The Way: ");
         road.stream().forEach((road1) -> {
             System.out.println("" + road1.getX() + "," + road1.getY());
         });
