@@ -84,21 +84,18 @@ public class Main {
 
                 for (int i = 0; i < 20; i++) {
                     for (int j = 0; j < 20; j++) {
-                        if (cellPane[i][j].getBackground() == Color.RED) {
+                        if (cellPane[i][j].getBackground() == Color.RED) 
                             MT[i][j] = 2;
-                        }
-                        if (cellPane[i][j].getBackground() == Color.GREEN) {
+                        if (cellPane[i][j].getBackground() == Color.GREEN)
                             MT[i][j] = 3;
-                        }
-                        if (cellPane[i][j].getBackground() == Color.DARK_GRAY) {
+                        if (cellPane[i][j].getBackground() == Color.DARK_GRAY)
                             MT[i][j] = 1;
-                        }
                     }
                 }
 
                 AstarAlgorithm astar = new AstarAlgorithm(MT);
                
-                Timer timer = new Timer(200, (ActionEvent e1) -> {
+                Timer timer = new Timer(1000, (ActionEvent e1) -> {
                     astar.create_Trace(cellPane);
                 });
 
